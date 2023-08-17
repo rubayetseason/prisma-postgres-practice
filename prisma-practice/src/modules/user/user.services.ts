@@ -35,4 +35,30 @@ const insertOrUpdateProfile = async (data: Profile): Promise<Profile> => {
   return result;
 };
 
-export const UserService = { createUser, insertOrUpdateProfile };
+const getUsers = async () => {
+  const result = await prisma.user.findMany({
+    include: {
+      profile: true,
+    },
+  });
+  return result;
+};
+
+const getSingleUser = async (id: number) => {
+  const result = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      profile: true,
+    },
+  });
+  return result;
+};
+
+export const UserService = {
+  createUser,
+  insertOrUpdateProfile,
+  getUsers,
+  getSingleUser,
+};
